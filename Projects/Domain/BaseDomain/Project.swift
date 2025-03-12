@@ -3,13 +3,13 @@ import ProjectDescription
 import ProjectDescriptionHelpers
 
 let project = Project.module(
-    name: ModulePaths.Domain.BaseDomain.rawValue,
+    name: ModulePaths.Domain.Domain.rawValue,
     targets: [
-        .implements(module: .domain(.BaseDomain), dependencies: [
+        .implements(module: .domain(.Domain), dependencies: [
             .shared(target: .GlobalThirdPartyLibrary)
         ]),
-        .tests(module: .domain(.BaseDomain), dependencies: [
-            .domain(target: .BaseDomain, type: .interface)
+        .tests(module: .domain(.Domain), dependencies: [
+            .domain(target: .Domain, type: .interface)
         ])
     ]
 )
