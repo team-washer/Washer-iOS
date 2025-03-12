@@ -15,6 +15,7 @@ let settings: Settings = .settings(
 
 let scripts: [TargetScript] = generateEnvironment.scripts
 
+@MainActor
 let targets: [Target] = [
     .target(
         name: env.name,
@@ -26,7 +27,9 @@ let targets: [Target] = [
         sources: ["Sources/**"],
         resources: ["Resources/**"],
         scripts: scripts,
-        dependencies: [],
+        dependencies: [
+            .SPM.Moya
+        ],
         settings: .settings(base: env.baseSetting)
     )
 ]

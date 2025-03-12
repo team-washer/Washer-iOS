@@ -1,4 +1,4 @@
-// swift-tools-version:5.7
+// swift-tools-version:5.9
 import PackageDescription
 
 #if TUIST
@@ -18,5 +18,7 @@ let packageSetting = PackageSettings(
 
 let package = Package(
     name: "Package",
-    dependencies: []
+    dependencies: [
+        .package(url: "https://github.com/Moya/Moya.git", from: "15.0.0")
+    ]
 )

@@ -1,0 +1,49 @@
+name: Washer CI
+
+on:
+  pull_request:
+    branches: [ "*" ]
+  push:
+    branches: [ "*" ]
+
+jobs:
+  CI:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Swift
+        uses: swift-actions/setup-swift@v1
+        with:
+          swift-version: '5.9'
+
+      - name: Build Project
+        run: swift build
+
+      - name: Send Success Notification to Discord
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ success() }}
+        with:
+          title: CI 성공!
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: 성공
+          image: ${{ secrets.CI_SUCCESS_IMAGE }}
+          description: CI가 성공적으로 완료되었습니다.
+          color: 00FF00
+          username: CI Bot
+          url: https://github.com/team-washer/Washer-iOS
+
+      - name: Send Failure Notification to Discord
+        uses: sarisia/actions-status-discord@v1
+        if: ${{ failure() }}
+        with:
+          title: CI 실패!
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: 실패
+          image: ${{ secrets.CI_FAIL_IMAGE }}
+          description: CI가 실패했습니다. 로그를 확인해주세요.
+          color: FF0000
+          username: CI Bot
+          url: https://github.com/team-washer/Washer-iOS
