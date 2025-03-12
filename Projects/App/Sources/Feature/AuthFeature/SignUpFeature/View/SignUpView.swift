@@ -9,11 +9,27 @@
 import SwiftUI
 
 struct SignUpView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+    @StateObject var authViewModel: AuthViewModel
 
-#Preview {
-    SignUpView()
+    var body: some View {
+        Button {
+            authViewModel.setupEmail(email: "s23052")
+            authViewModel.setupPassword(password: "washertest1!")
+            authViewModel.setupName(name: "서지완")
+            authViewModel.setupGrade(grade: "3")
+            authViewModel.setupClassRoom(classRoom: "3")
+            authViewModel.setupNumber(number: "14")
+            authViewModel.setupGender(gender: "MAN")
+            authViewModel.setupRoom(room: "415")
+            authViewModel.signUp { statusCode in
+                if (200...299).contains(statusCode) {
+                    print("\(statusCode) | 회원가입 성공")
+                } else {
+                    print("\(statusCode) | 회원가입 실패")
+                }
+            }
+        } label: {
+            Text("회원가입 테스트 버튼")
+        }
+    }
 }
