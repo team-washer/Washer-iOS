@@ -13,7 +13,7 @@ struct SignUpView: View {
 
     var body: some View {
         Button {
-            authViewModel.setupEmail(email: "s23050")
+            authViewModel.setupEmail(email: "s23052")
             authViewModel.setupPassword(password: "washertest1!")
             authViewModel.setupName(name: "서지완")
             authViewModel.setupGrade(grade: "3")
@@ -32,8 +32,4 @@ struct SignUpView: View {
             Text("회원가입 테스트 버튼")
         }
     }
-}
-
-#Preview {
-    SignUpView(authViewModel: AuthViewModel())
 }
