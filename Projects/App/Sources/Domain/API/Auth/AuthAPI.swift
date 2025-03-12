@@ -11,7 +11,7 @@ import Moya
 
 public enum AuthAPI {
     case signUp(param: SignUpRequest)
-    case signIn(prram: SignInRequest)
+    case signIn(param: SignInRequest)
     case refresh(idToken: String)
 }
 
@@ -46,21 +46,17 @@ extension AuthAPI: TargetType {
 
     public var task: Task {
         switch self {
-        case let .login(idToken), let .refresh(idToken):
-            return .requestParameters(parameters: [
-                "idToken" : idToken
-                ],
-                encoding: JSONEncoding.default)
-        case .logout:
+        case .signUp(let param):
+            return .requestJSONEncodable(param)
+        case .signIn(let param):
+            return .requestJSONEncodable(param)
+        case .refresh(let idToken):
             return .requestPlain
         }
     }
 
     public var headers: [String : String]? {
         switch self {
-        case
-            .logout(let refreshToken):
-            return ["Content-Type": "application/json", "refreshToken": refreshToken]
         default:
             return ["Content-Type": "application/json"]
         }
