@@ -6,51 +6,79 @@
 //  Copyright © 2025 Washer. All rights reserved.
 //
 
+//
+//  AuthViewModel.swift
+//  Washer
+//
+//  Created by 서지완 on 3/12/25.
+//  Copyright © 2025 Washer. All rights reserved.
+//
+
 import Moya
 import Foundation
 
 public final class AuthViewModel: ObservableObject {
 
+    // MARK: - Private Properties
     private let authProvider = MoyaProvider<AuthAPI>()
 
+    // MARK: - User Info Properties
     private var email: String = ""
     private var password: String = ""
+    private var name: String = ""
+    private var gender: String = ""
+    private var grade: String = ""
+    private var classRoom: String = ""
+    private var number: String = ""
+    private var room: String = ""
+    private var major: String = ""
+
+    // MARK: - Additional Properties
+    private var emailStatus: String = ""
     private var authCode: String = ""
     private var newPassword: String = ""
     private var newServePassword: String = ""
-    private var name: String = ""
-    private var gender: String = ""
-    private var room: String = ""
-    private var classRoom: String = ""
-    private var major: String = ""
-    private var emailStatus: String = ""
-    private var number: String = ""
-    private var grade: String = ""
-
     private var passwordServe: String = ""
 
-    func setupEmailStatus(emailStatus: String) {
-        self.emailStatus = emailStatus
-    }
-
+    // MARK: - Setup Methods
     func setupEmail(email: String) {
         self.email = "\(email)@gsm.hs.kr"
-    }
-
-    func setupNumber(number: String) {
-        self.number = number
     }
 
     func setupPassword(password: String) {
         self.password = password
     }
 
-    func setupRoom(room: String) {
-        self.room = room
+    func setupName(name: String) {
+        self.name = name
+    }
+
+    func setupGender(gender: String) {
+        self.gender = gender
+    }
+
+    func setupGrade(grade: String) {
+        self.grade = grade
     }
 
     func setupClassRoom(classRoom: String) {
         self.classRoom = classRoom
+    }
+
+    func setupNumber(number: String) {
+        self.number = number
+    }
+
+    func setupRoom(room: String) {
+        self.room = room
+    }
+
+    func setupMajor(major: String) {
+        self.major = major
+    }
+
+    func setupEmailStatus(emailStatus: String) {
+        self.emailStatus = emailStatus
     }
 
     func setupAuthCode(authCode: String) {
@@ -67,23 +95,7 @@ public final class AuthViewModel: ObservableObject {
         self.newServePassword = newPassword
     }
 
-    func setupName(name: String) {
-        self.name = name
-    }
-
-    func setupGrade(grade: String) {
-        self.grade = grade
-    }
-
-    func setupGender(gender: String) {
-        self.gender = gender
-    }
-
-    func setupMajor(major: String) {
-        self.major = major
-    }
-
-    // MARK: - Sign In
+    // MARK: - Sign Up Request
     func signUp(completion: @escaping (Int) -> Void) {
         let param = SignUpRequest(
             email: email,
@@ -147,6 +159,4 @@ public final class AuthViewModel: ObservableObject {
             }
         }
     }
-
 }
-
