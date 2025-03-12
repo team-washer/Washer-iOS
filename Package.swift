@@ -5,6 +5,7 @@ import PackageDescription
 import ProjectDescription
 import ProjectDescriptionHelpers
 
+@MainActor
 let packageSetting = PackageSettings(
     baseSettings: .settings(
         configurations: [
@@ -16,7 +17,10 @@ let packageSetting = PackageSettings(
 )
 #endif
 
+@MainActor
 let package = Package(
     name: "Package",
-    dependencies: []
+    dependencies: [
+        .package(url: "https://github.com/Moya/Moya.git", from: "15.0.0")
+    ]
 )
