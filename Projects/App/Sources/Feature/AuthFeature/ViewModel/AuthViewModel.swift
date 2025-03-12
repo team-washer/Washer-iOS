@@ -6,14 +6,6 @@
 //  Copyright © 2025 Washer. All rights reserved.
 //
 
-//
-//  AuthViewModel.swift
-//  Washer
-//
-//  Created by 서지완 on 3/12/25.
-//  Copyright © 2025 Washer. All rights reserved.
-//
-
 import Moya
 import Foundation
 
@@ -119,7 +111,7 @@ public final class AuthViewModel: ObservableObject {
 
                     DispatchQueue.main.async {
                         switch statusCode {
-                        case 200:
+                        case 200...299:
                             print("✅ 회원가입 성공! 🎉 (상태 코드: \(statusCode))")
                             completion(statusCode)
 
