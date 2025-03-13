@@ -55,8 +55,13 @@ extension AuthAPI: TargetType {
         }
     }
 
-    public var headers: [String : String]? {
+    public var headers: [String: String]? {
         switch self {
+        case .refresh(idToken: let idToken):
+            return [
+                "Content-Type": "application/json",
+                "Refresh-Token": idToken
+            ]
         default:
             return ["Content-Type": "application/json"]
         }
