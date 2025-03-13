@@ -157,4 +157,68 @@ public final class AuthViewModel: ObservableObject {
         }
     }
 
+    func signIn(completion: @escaping (Int) -> Void) {
+        let param = SignInRequest(
+            email: email,
+            password: password
+        )
+
+        authProvider.request(.signIn(param: param)) { [weak self] response in
+            guard let self = self else { return }
+
+            switch response {
+            case .success(let result):
+                let statusCode = result.statusCode
+
+                // 🔹 응답 데이터 확인을 위해 출력
+                if let responseString = String(data: result.data, encoding: .utf8) {
+                    print("📥 서버 응답 (상태 코드: \(statusCode)):\n\(responseString)")
+                }
+
+                // 🔹 응답이 비어 있는지 확인
+                guard !result.data.isEmpty else {
+                    print("⚠️ 응답 본문이 비어 있습니다. (상태 코드: \(statusCode))")
+                    DispatchQueue.main.async { completion(statusCode) }
+                    return
+                }
+
+                do {
+                    // JSON 변환 시도
+                    let responseData = try result.mapJSON()
+                    print("✅ JSON 변환 성공: \(responseData)")
+
+                    DispatchQueue.main.async {
+                        switch statusCode {
+                        case 200...299:
+                            print("🎉 로그인 성공! (상태 코드: \(statusCode))")
+                        case 400:
+                            print("⚠️ [\(statusCode)] 잘못된 요청 - 입력값을 확인하세요.")
+                        case 401:
+                            print("🔑 [\(statusCode)] 인증 실패 - 로그인 정보를 확인하세요.")
+                        case 403:
+                            print("🚫 [\(statusCode)] 접근 금지 - 권한이 없습니다.")
+                        case 500:
+                            print("🔥 [\(statusCode)] 서버 오류 - 나중에 다시 시도하세요.")
+                        default:
+                            print("❓ 예상치 못한 상태 코드: \(statusCode), 응답 데이터: \(responseData)")
+                        }
+                        completion(statusCode)
+                    }
+                } catch {
+                    print("❌ JSON 파싱 오류 발생 (상태 코드: \(statusCode)) - \(error.localizedDescription)")
+                    DispatchQueue.main.async {
+                        completion(-1)
+                    }
+                }
+
+            case .failure(let err):
+                print("🌐 네트워크 오류 발생! - \(err.localizedDescription)")
+                DispatchQueue.main.async {
+                    completion(0)
+                }
+            }
+        }
+    }
+
+
 }
