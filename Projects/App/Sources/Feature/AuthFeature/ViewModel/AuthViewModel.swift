@@ -170,12 +170,10 @@ public final class AuthViewModel: ObservableObject {
             case .success(let result):
                 let statusCode = result.statusCode
 
-                // 🔹 응답 데이터 확인을 위해 출력
                 if let responseString = String(data: result.data, encoding: .utf8) {
                     print("📥 서버 응답 (상태 코드: \(statusCode)):\n\(responseString)")
                 }
 
-                // 🔹 응답이 비어 있는지 확인
                 guard !result.data.isEmpty else {
                     print("⚠️ 응답 본문이 비어 있습니다. (상태 코드: \(statusCode))")
                     DispatchQueue.main.async { completion(statusCode) }
@@ -183,9 +181,16 @@ public final class AuthViewModel: ObservableObject {
                 }
 
                 do {
-                    // JSON 변환 시도
-                    let responseData = try result.mapJSON()
-                    print("✅ JSON 변환 성공: \(responseData)")
+                    let responseData = try JSONDecoder().decode(SignInResponse.self, from: result.data)
+                    let accessToken = responseData.access
+                    let refreshToken = responseData.refresh
+                    let expiresIn: TimeInterval = 3600  // 1시간 후 만료 (서버 설정에 맞게 조정)
+
+                    // 🔹 토큰 저장
+                    KeyChain.shared.saveTokenWithExpiration(key: Const.KeyChainKey.accessToken, token: accessToken, expiresIn: expiresIn)
+                    KeyChain.shared.saveTokenWithExpiration(key: Const.KeyChainKey.refreshToken, token: refreshToken, expiresIn: expiresIn * 24)  // Refresh Token은 더 길게 설정
+
+                    print("✅ 토큰 저장 완료!")
 
                     DispatchQueue.main.async {
                         switch statusCode {
@@ -219,6 +224,4 @@ public final class AuthViewModel: ObservableObject {
             }
         }
     }
-
-
 }
