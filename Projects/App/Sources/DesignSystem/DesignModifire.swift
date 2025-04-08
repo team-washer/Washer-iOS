@@ -54,6 +54,12 @@ extension Text {
     }
 }
 
+extension View {
+    func color(_ style: ColorStyle) -> some View {
+        self.foregroundColor(.color(style))
+    }
+}
+
 //MARK: 폰트, 컬러 사용 양식
 struct DesignModifireView: View {
     var body: some View {
