@@ -68,7 +68,7 @@ struct SignInView: View {
                 "비밀번호를 입력해주세요.",
                 text: $passwordTextField,
                 title: "비밀번호",
-                errorText: "비밀번호 형식이 맞지 않습니다.",
+                errorText: "비밀번호는 8~16자, 특수문자 포함 필수",
                 isError: computedPasswordError,
                 isSecure: true
             )
@@ -89,6 +89,19 @@ struct SignInView: View {
                 .padding(.leading, 16)
                 .padding(.top, 6)
             }
+
+            WasherButton(
+                text: "로그인",
+                horizontalPadding: 166,
+                verticalPadding: 17
+            ) {}
+                .disabled(
+                    computedEmailError ||
+                    computedPasswordError ||
+                    emailTextField.isEmpty ||
+                    passwordTextField.isEmpty
+                )
+            .padding(.top, 111)
 
             Spacer()
         }
