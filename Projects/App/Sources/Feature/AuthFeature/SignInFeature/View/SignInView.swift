@@ -150,5 +150,5 @@ struct SignInView: View {
 }
 
 #Preview {
-    SignInView()
+    SignInView(authViewModel: AuthViewModel())
 }

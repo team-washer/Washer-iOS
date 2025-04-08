@@ -101,7 +101,3 @@ struct WasherTextField: View {
             .padding(.horizontal, 16)
         }
 }
-
-#Preview {
-    SignInView()
-}

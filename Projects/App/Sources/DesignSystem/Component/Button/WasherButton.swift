@@ -57,7 +57,3 @@ public struct WasherButton: View {
         )
     }
 }
-
-#Preview {
-    SignInView()
-}
