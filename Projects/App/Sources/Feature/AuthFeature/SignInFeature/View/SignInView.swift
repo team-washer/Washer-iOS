@@ -102,6 +102,8 @@ struct SignInView: View {
                     UserDefaults.standard.set(email, forKey: "savedEmail")
                     UserDefaults.standard.set(password, forKey: "savedPassword")
                     UserDefaults.standard.set(isLoggedIn, forKey: "isLoggedIn")
+
+                    print("✅ 로컬 저장 완료: \(email), \(password), 로그인 상태 유지: \(isLoggedIn)")
                 }
             }
             .disabled(
@@ -111,6 +113,25 @@ struct SignInView: View {
                 passwordTextField.isEmpty
             )
             .padding(.top, 111)
+
+            HStack(spacing: 12) {
+                Text("아아디 찾기")
+
+                Rectangle()
+                    .frame(width: 1, height: 12)
+                    .color(.gray200)
+
+                Text("비밀번호 찾기")
+
+                Rectangle()
+                    .frame(width: 1, height: 12)
+                    .color(.gray200)
+
+                Text("회원가입")
+            }
+            .color(.gray700)
+            .font(.pretendard(.regular, size: 12))
+            .padding(.top, 14)
 
             Spacer()
         }
