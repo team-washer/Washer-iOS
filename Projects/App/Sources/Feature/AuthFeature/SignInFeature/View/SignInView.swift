@@ -94,13 +94,22 @@ struct SignInView: View {
                 text: "로그인",
                 horizontalPadding: 166,
                 verticalPadding: 17
-            ) {}
-                .disabled(
-                    computedEmailError ||
-                    computedPasswordError ||
-                    emailTextField.isEmpty ||
-                    passwordTextField.isEmpty
-                )
+            ) {
+                if isLoggedIn {
+                    let email = "\(emailTextField)@gsm.hs.kr"
+                    let password = passwordTextField
+
+                    UserDefaults.standard.set(email, forKey: "savedEmail")
+                    UserDefaults.standard.set(password, forKey: "savedPassword")
+                    UserDefaults.standard.set(isLoggedIn, forKey: "isLoggedIn")
+                }
+            }
+            .disabled(
+                computedEmailError ||
+                computedPasswordError ||
+                emailTextField.isEmpty ||
+                passwordTextField.isEmpty
+            )
             .padding(.top, 111)
 
             Spacer()
