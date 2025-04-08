@@ -72,6 +72,7 @@ struct WasherTextField: View {
                     if isSecure {
                         Button {
                             isSecureButton.toggle()
+                            Haptic.impact(style: .soft)
                         } label: {
                             Image(isSecureButton ? "washerPassword" : "washerNonePassword")
                                 .foregroundColor(.gray)

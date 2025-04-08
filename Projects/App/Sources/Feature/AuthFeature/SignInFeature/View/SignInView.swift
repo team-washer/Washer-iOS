@@ -79,6 +79,7 @@ struct SignInView: View {
 
             Button {
                 isLoggedIn.toggle()
+                Haptic.impact(style: .soft)
             } label: {
                 HStack(spacing: 2) {
                     Image(isLoggedIn ? "washerCheckButton" : "washerNoneCheckButton")
