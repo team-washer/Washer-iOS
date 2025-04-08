@@ -40,6 +40,7 @@ enum ColorStyle: String {
     case main100 = "main100"
     case main200 = "main200"
     case main300 = "main300"
+    case main400 = "main400"
 }
 
 extension Color {
