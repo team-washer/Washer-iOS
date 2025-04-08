@@ -56,6 +56,10 @@ struct WasherTextField: View {
                 .focused($isFocused)
                 .color(.gray700)
                 .font(.pretendard(.semiBold, size: 14))
+                .background(
+                    RoundedRectangle(cornerRadius: 8)
+                        .color(.gray50)
+                )
                 .overlay {
                     RoundedRectangle(cornerRadius: 8)
                         .strokeBorder(borderColor)
@@ -73,4 +77,8 @@ struct WasherTextField: View {
         }
         .padding(.horizontal, 16)
     }
+}
+
+#Preview {
+    SignInView()
 }
