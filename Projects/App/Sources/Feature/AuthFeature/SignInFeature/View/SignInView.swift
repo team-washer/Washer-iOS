@@ -9,8 +9,13 @@
 import SwiftUI
 
 struct SignInView: View {
+    @State private var emailTextField: String = ""
+    @State private var passwordTextField: String = ""
+    @State private var showError: Bool = false
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(spacing: 0) {
+            WasherTextField("이메일을 입력해주세요.", text: $emailTextField, title: "이메일", errorText: "잘못 입력했습니다.", isError: showError)
+        }
     }
 }
 
