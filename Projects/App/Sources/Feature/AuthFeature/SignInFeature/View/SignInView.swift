@@ -23,6 +23,8 @@ struct SignInView: View {
     }
 
     var body: some View {
+        ZStack {
+            Color.white.ignoresSafeArea()
         VStack(spacing: 0) {
             HStack {
                 WasherAsset.washerLeftButton.swiftUIImage
@@ -147,6 +149,7 @@ struct SignInView: View {
             Spacer()
         }
     }
+}
 }
 
 #Preview {
