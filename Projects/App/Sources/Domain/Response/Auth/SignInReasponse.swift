@@ -9,11 +9,23 @@
 import Foundation
 
 public struct SignInResponse: Codable {
-    var access: String
-    var refresh: String
+    var accessToken: String
+    var accessTokenExpiresIn: String
+    var refreshToken: String
+    var refreshTokenExpiresIn: String
+    var role: String
 
-    public init(access: String, refresh: String) {
-        self.access = access
-        self.refresh = refresh
+    public init(
+        accessToken: String,
+        accessTokenExpiresIn: String,
+        refreshToken: String,
+        refreshTokenExpiresIn: String,
+        role: String
+    ) {
+        self.accessToken = accessToken
+        self.accessTokenExpiresIn = accessTokenExpiresIn
+        self.refreshToken = refreshToken
+        self.refreshTokenExpiresIn = refreshTokenExpiresIn
+        self.role = role
     }
 }

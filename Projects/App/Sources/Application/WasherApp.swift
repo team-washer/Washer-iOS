@@ -13,7 +13,7 @@ struct WasherApp: App {
 
     var body: some Scene {
         WindowGroup {
-            SignUpView(authViewModel: AuthViewModel())
+            SignInView(authViewModel: AuthViewModel())
         }
     }
 }
