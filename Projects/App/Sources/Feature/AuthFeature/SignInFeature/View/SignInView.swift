@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct SignInView: View {
+    @StateObject var authViewModel: AuthViewModel
     @State private var emailTextField: String = ""
     @State private var passwordTextField: String = ""
     @State private var isLoggedIn: Bool = false
@@ -95,6 +96,16 @@ struct SignInView: View {
                 horizontalPadding: 166,
                 verticalPadding: 17
             ) {
+                authViewModel.setupEmail(email: emailTextField)
+                authViewModel.setupPassword(password: passwordTextField)
+                authViewModel.signIn { statusCode in
+                    if (200...299).contains(statusCode) {
+                        print("\(statusCode) | 로그인 성공")
+                    } else {
+                        print("\(statusCode) | 로그인 실패")
+                    }
+                }
+
                 if isLoggedIn {
                     let email = "\(emailTextField)@gsm.hs.kr"
                     let password = passwordTextField
