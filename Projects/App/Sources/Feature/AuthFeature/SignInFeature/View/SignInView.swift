@@ -11,9 +11,15 @@ import SwiftUI
 struct SignInView: View {
     @State private var emailTextField: String = ""
     @State private var passwordTextField: String = ""
-    @State private var emailShowError: Bool = false
-    @State private var passwordShowError: Bool = false
     @State private var isLoggedIn: Bool = false
+
+    private var computedEmailError: Bool {
+        !emailTextField.isEmpty && !Validator.isValidEmail(emailTextField)
+    }
+
+    private var computedPasswordError: Bool {
+        !passwordTextField.isEmpty && !Validator.isValidPassword(passwordTextField)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -30,19 +36,19 @@ struct SignInView: View {
                     .padding(.top, 5)
             }
 
-            HStack(spacing: 0) {
-                WasherTextField (
+            HStack(alignment: .top, spacing: 0) {
+                WasherTextField(
                     "이메일을 입력해주세요.",
                     text: $emailTextField,
                     title: "이메일",
                     errorText: "이메일 형식이 맞지 않습니다.",
-                    isError: emailShowError
+                    isError: computedEmailError
                 )
 
                 Text("@")
                     .font(.pretendard(.medium, size: 18))
                     .color(.gray400)
-                    .padding(.top, 20)
+                    .padding(.top, 32)
 
                 Text("gsm.hs.kr")
                     .font(.pretendard(.medium, size: 14))
@@ -53,18 +59,18 @@ struct SignInView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .color(.gray50)
                     )
-                    .padding(.trailing, 16)
-                    .padding(.leading, 16)
+                    .padding(.horizontal, 16)
                     .padding(.top, 20)
             }
             .padding(.top, 64)
 
-            WasherTextField (
+            WasherTextField(
                 "비밀번호를 입력해주세요.",
                 text: $passwordTextField,
                 title: "비밀번호",
                 errorText: "비밀번호 형식이 맞지 않습니다.",
-                isError: passwordShowError
+                isError: computedPasswordError,
+                isSecure: true
             )
             .padding(.top, 34)
 

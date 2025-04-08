@@ -15,6 +15,7 @@ struct WasherTextField: View {
     var placeholder: String
     var errorText: String
     var isError: Bool
+    var isSecure: Bool
     var onSubmit: () -> Void
 
     private var borderColor: Color {
@@ -31,6 +32,7 @@ struct WasherTextField: View {
         title: String = "",
         errorText: String = "",
         isError: Bool = false,
+        isSecure: Bool = false,
         onSubmit: @escaping () -> Void = {}
     ) {
         self._text = text
@@ -38,24 +40,45 @@ struct WasherTextField: View {
         self.title = title
         self.errorText = errorText
         self.isError = isError
+        self.isSecure = isSecure
         self.onSubmit = onSubmit
     }
 
-    var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            if !title.isEmpty {
-                Text(title)
-                    .font(.pretendard(.bold, size: 14))
-                    .color(.main100)
-            }
+    @State private var isSecureButton: Bool = true
 
-            TextField(placeholder, text: $text)
-                .padding(.horizontal, 16)
-                .frame(height: 44)
-                .onSubmit(onSubmit)
-                .focused($isFocused)
-                .color(.gray700)
-                .font(.pretendard(.semiBold, size: 14))
+    var body: some View {
+            VStack(alignment: .leading, spacing: 4) {
+                if !title.isEmpty {
+                    Text(title)
+                        .font(.pretendard(.bold, size: 14))
+                        .color(.main100)
+                }
+
+                HStack(spacing: 0) {
+                    Group {
+                        if isSecure && isSecureButton {
+                            SecureField(placeholder, text: $text)
+                        } else {
+                            TextField(placeholder, text: $text)
+                        }
+                    }
+                    .padding(.horizontal, 16)
+                    .frame(height: 44)
+                    .onSubmit(onSubmit)
+                    .focused($isFocused)
+                    .foregroundColor(.color(.gray700))
+                    .font(.pretendard(.semiBold, size: 14))
+
+                    if isSecure {
+                        Button {
+                            isSecureButton.toggle()
+                        } label: {
+                            Image(isSecureButton ? "washerPassword" : "washerNonePassword")
+                                .foregroundColor(.gray)
+                                .padding(.trailing, 20)
+                        }
+                    }
+                }
                 .background(
                     RoundedRectangle(cornerRadius: 8)
                         .color(.gray50)
@@ -69,14 +92,14 @@ struct WasherTextField: View {
                     isFocused = true
                 }
 
-            if isError {
-                Text(errorText)
-                    .foregroundStyle(.red)
-                    .font(.pretendard(.regular, size: 12))
+                if isError {
+                    Text(errorText)
+                        .foregroundStyle(.red)
+                        .font(.pretendard(.regular, size: 12))
+                }
             }
+            .padding(.horizontal, 16)
         }
-        .padding(.horizontal, 16)
-    }
 }
 
 #Preview {
