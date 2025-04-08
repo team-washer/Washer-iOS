@@ -101,20 +101,20 @@ struct SignInView: View {
                 authViewModel.signIn { statusCode in
                     if (200...299).contains(statusCode) {
                         print("\(statusCode) | 로그인 성공")
+
+                        if isLoggedIn {
+                            let email = "\(emailTextField)@gsm.hs.kr"
+                            let password = passwordTextField
+
+                            UserDefaults.standard.set(email, forKey: "savedEmail")
+                            UserDefaults.standard.set(password, forKey: "savedPassword")
+                            UserDefaults.standard.set(isLoggedIn, forKey: "isLoggedIn")
+
+                            print("✅ 로컬 저장 완료: \(email), \(password), 로그인 상태 유지: \(isLoggedIn)")
+                        }
                     } else {
                         print("\(statusCode) | 로그인 실패")
                     }
-                }
-
-                if isLoggedIn {
-                    let email = "\(emailTextField)@gsm.hs.kr"
-                    let password = passwordTextField
-
-                    UserDefaults.standard.set(email, forKey: "savedEmail")
-                    UserDefaults.standard.set(password, forKey: "savedPassword")
-                    UserDefaults.standard.set(isLoggedIn, forKey: "isLoggedIn")
-
-                    print("✅ 로컬 저장 완료: \(email), \(password), 로그인 상태 유지: \(isLoggedIn)")
                 }
             }
             .disabled(
