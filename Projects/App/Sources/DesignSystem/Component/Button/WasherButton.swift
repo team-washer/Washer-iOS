@@ -42,8 +42,6 @@ public struct WasherButton: View {
                         .fill(isPressed ? Color.color(.main100) : Color.color(.main100))
                 )
                 .scaleEffect(isPressed ? 0.9 : 1.0)
-            
-
         }
         .buttonStyle(PlainButtonStyle())
         .gesture(
