@@ -38,9 +38,8 @@ public struct WasherButton: View {
                 .padding(.vertical, verticalPadding)
                 .padding(.horizontal, horizontalPadding)
                 .background(
-                    RoundedRectangle(cornerRadius: 6)
+                    RoundedRectangle(cornerRadius: 30)
                         .fill(isPressed ? Color.color(.main100) : Color.color(.main100))
-
                 )
                 .scaleEffect(isPressed ? 0.9 : 1.0)
             
