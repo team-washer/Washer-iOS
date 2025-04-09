@@ -23,11 +23,8 @@ struct SignUpView: View {
                 HStack {
                     WasherAsset.washerLeftButton.swiftUIImage
                         .padding(.leading, 26)
-
                     Spacer()
                 }
-
-                Spacer()
 
                 VStack(spacing: 6) {
                     Text("회원가입")
@@ -38,7 +35,6 @@ struct SignUpView: View {
                         .font(.pretendard(.regular, size: 12))
                         .color(.gray300)
                 }
-
             }
             .padding(.top, 50)
 
@@ -46,35 +42,76 @@ struct SignUpView: View {
                 "이름을 입력해주세요",
                 text: $nameTextField,
                 title: "이름",
-                errorText: "이름을 잘못 입력했습니다.",
+                errorText: "이름은 한글 2~4자여야 합니다.",
                 isError: nameIsError
             )
             .padding(.top, 38)
+            .onChange(of: nameTextField) { newValue in
+                nameTextField = String(newValue.prefix(4))
+
+                let isOnlyHangul = nameTextField.allSatisfy { $0.isHangul }
+                nameIsError = !(isOnlyHangul && (2...4).contains(nameTextField.count))
+            }
 
             WasherTextField(
                 "학번을 입력해주세요",
                 text: $schoolNumberTextField,
                 title: "학번",
-                errorText: "숫자 4자리만 입력이 가능합니다. (ex.3314)",
+                errorText: "형식이 올바르지 않습니다. (예: 2312)",
                 isError: schoolNumberIsError
             )
+            .onChange(of: schoolNumberTextField) { newValue in
+                schoolNumberTextField = String(newValue.prefix(4)).filter { $0.isNumber }
+                schoolNumberIsError = !isValidSchoolNumber(schoolNumberTextField)
+            }
 
             WasherTextField(
                 "기숙사 호실을 입력해주세요",
                 text: $domitoryRoomTextField,
                 title: "호실",
-                errorText: "숫자 3자리만 입력이 가능합니다. (ex.415)",
+                errorText: "형식이 올바르지 않습니다. (예: 315)",
                 isError: domitoryRoomIsError
             )
+            .onChange(of: domitoryRoomTextField) { newValue in
+                domitoryRoomTextField = String(newValue.prefix(3)).filter { $0.isNumber }
+                domitoryRoomIsError = !isValidRoomNumber(domitoryRoomTextField)
+            }
 
             WasherButton(
                 text: "다음",
                 horizontalPadding: 173,
                 verticalPadding: 17
-            )
+            ) {}
+                .disabled(!isFormValid)
 
             Spacer()
         }
+    }
+
+    // MARK: - 정규식 검사 함수들
+
+    func isValidName(_ name: String) -> Bool {
+        let regex = #"^[가-힣]{2,4}$"#
+        return name.range(of: regex, options: .regularExpression) != nil
+    }
+
+    func isValidSchoolNumber(_ number: String) -> Bool {
+        let regex = #"^[1-3][1-4](0[1-9]|1[0-8])$"#
+        return number.range(of: regex, options: .regularExpression) != nil
+    }
+
+    func isValidRoomNumber(_ number: String) -> Bool {
+        let regex = #"^[2-5](0[0-9]|1[0-9]|20)$"#
+        return number.range(of: regex, options: .regularExpression) != nil
+    }
+
+    var isFormValid: Bool {
+        return isValidName(nameTextField) &&
+               isValidSchoolNumber(schoolNumberTextField) &&
+               isValidRoomNumber(domitoryRoomTextField) &&
+               !nameTextField.isEmpty &&
+               !schoolNumberTextField.isEmpty &&
+               !domitoryRoomTextField.isEmpty
     }
 }
 
