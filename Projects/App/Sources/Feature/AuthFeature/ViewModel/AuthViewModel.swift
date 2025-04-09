@@ -182,13 +182,39 @@ public final class AuthViewModel: ObservableObject {
 
                 do {
                     let responseData = try JSONDecoder().decode(SignInResponse.self, from: result.data)
-                    let accessToken = responseData.access
-                    let refreshToken = responseData.refresh
-                    let expiresIn: TimeInterval = 3600  // 1시간 후 만료 (서버 설정에 맞게 조정)
+                    let accessToken = responseData.accessToken
+                    let refreshToken = responseData.refreshToken
+                    let role = responseData.role
 
-                    // 🔹 토큰 저장
-                    KeyChain.shared.saveTokenWithExpiration(key: Const.KeyChainKey.accessToken, token: accessToken, expiresIn: expiresIn)
-                    KeyChain.shared.saveTokenWithExpiration(key: Const.KeyChainKey.refreshToken, token: refreshToken, expiresIn: expiresIn * 24)  // Refresh Token은 더 길게 설정
+                    let accessTokenExpiresIn: Double = {
+                        let formatter = ISO8601DateFormatter()
+                        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+                        if let date = formatter.date(from: responseData.accessTokenExpiresIn) {
+                            let timestamp = date.timeIntervalSince1970
+                            print("✅ accessTokenExpiresIn 변환 성공: \(timestamp)")
+                            return timestamp
+                        } else {
+                            print("❌ accessTokenExpiresIn 변환 실패")
+                            return 0
+                        }
+                    }()
+
+                    let refreshTokenExpiresIn: Double = {
+                        let formatter = ISO8601DateFormatter()
+                        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+                        if let date = formatter.date(from: responseData.refreshTokenExpiresIn) {
+                            let timestamp = date.timeIntervalSince1970
+                            print("✅ refreshTokenExpiresIn 변환 성공: \(timestamp)")
+                            return timestamp
+                        } else {
+                            print("❌ refreshTokenExpiresIn 변환 실패")
+                            return 0
+                        }
+                    }()
+
+
+                    KeyChain.shared.saveTokenWithExpiration(key: Const.KeyChainKey.accessToken, token: accessToken, expiresIn: accessTokenExpiresIn)
+                    KeyChain.shared.saveTokenWithExpiration(key: Const.KeyChainKey.refreshToken, token: refreshToken, expiresIn: refreshTokenExpiresIn)
 
                     print("✅ 토큰 저장 완료!")
 

@@ -17,7 +17,7 @@ public enum AuthAPI {
 
 extension AuthAPI: TargetType {
     public var baseURL: URL {
-        return URL(string: "https://guiding-fully-gecko.ngrok-free.app")!
+        return URL(string: "https://port-0-washer-backend-m8b4oucx4149eb8a.sel4.cloudtype.app")!
     }
 
     public var path: String {
