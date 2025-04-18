@@ -10,15 +10,30 @@ import SwiftUI
 
 struct SignUpView: View {
     @StateObject var authViewModel: AuthViewModel
-    @State var nameTextField: String = ""
-    @State var nameIsError: Bool = false
-    @State var schoolNumberTextField: String = ""
-    @State var schoolNumberIsError: Bool = false
-    @State var domitoryRoomTextField: String = ""
-    @State var domitoryRoomIsError: Bool = false
+    @State var emailTextField: String = ""
+    @State var emailIsError: Bool = false
+    @State var authenticationCodeNumberTextField: String = ""
+    @State var authenticationCodeIsError: Bool = false
+    @State var passwordTextField: String = ""
+    @State var passwordIsError: Bool = false
+    @State var passwordCheckTextField: String = ""
+    @State var passwordCheckIsError: Bool = false
+    @State var authenticationSuccess: Bool = false
+
+    private var computedEmailError: Bool {
+        !emailTextField.isEmpty && !Validator.isValidEmail(emailTextField)
+    }
+
+    private var computedPasswordError: Bool {
+        !passwordTextField.isEmpty && !Validator.isValidPassword(passwordTextField)
+    }
+
+    private var computedPasswordCheckError: Bool {
+        !passwordCheckTextField.isEmpty && passwordTextField != passwordCheckTextField
+    }
 
     var body: some View {
-        VStack(spacing: 34) {
+        VStack(spacing: 0) {
             ZStack {
                 HStack {
                     WasherAsset.washerLeftButton.swiftUIImage
@@ -38,80 +53,96 @@ struct SignUpView: View {
             }
             .padding(.top, 50)
 
-            WasherTextField(
-                "이름을 입력해주세요",
-                text: $nameTextField,
-                title: "이름",
-                errorText: "이름은 한글 2~4자여야 합니다.",
-                isError: nameIsError
-            )
-            .padding(.top, 38)
-            .onChange(of: nameTextField) { newValue in
-                nameTextField = String(newValue.prefix(4))
+            HStack(alignment: .top, spacing: 0) {
+                WasherTextField(
+                    "이메일을 입력해주세요.",
+                    text: $emailTextField,
+                    title: "이메일",
+                    errorText: "이메일 형식이 맞지 않습니다.",
+                    isError: computedEmailError
+                )
+                .padding(.leading, 16)
+                .padding(.trailing, 8)
 
-                let isOnlyHangul = nameTextField.allSatisfy { $0.isHangul }
-                nameIsError = !(isOnlyHangul && (2...4).contains(nameTextField.count))
+                Text("@")
+                    .font(.pretendard(.medium, size: 18))
+                    .color(.gray400)
+                    .padding(.top, 32)
+
+                Text("gsm.hs.kr")
+                    .font(.pretendard(.medium, size: 12))
+                    .color(.gray400)
+                    .padding(.horizontal, 16)
+                    .frame(height: 44)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .color(.gray50)
+                    )
+                    .padding(.horizontal, 8)
+                    .padding(.trailing, 8)
+                    .padding(.top, 20)
+            }
+            .padding(.top, 72)
+
+            HStack(alignment: .bottom, spacing: 10) {
+                WasherTextField(
+                    "인증번호를 입력해주세요",
+                    text: $authenticationCodeNumberTextField,
+                    title: "인증코드",
+                    errorText: "비밀번호가 틀렸습니다.",
+                    isError: authenticationCodeIsError
+                )
+
+                Text("확인")
+                    .font(.pretendard(.semiBold, size: 12))
+                    .padding(.vertical, 14)
+                    .padding(.horizontal, 35)
+                    .background(
+                        RoundedRectangle(cornerRadius: 4)
+                            .color(.gray300)
+                        )
+            }
+            .padding(.horizontal, 16)
+            .padding(.top, 34)
+
+            HStack {
+                if authenticationSuccess == false {
+                    Text("인증번호가 발송되었습니다 ")
+                        .font(.pretendard(.regular, size: 12))
+                        .color(.gray400)
+                        .padding(.leading, 16)
+                        .padding(.top, 6)
+                }
+
+                Spacer()
             }
 
             WasherTextField(
-                "학번을 입력해주세요",
-                text: $schoolNumberTextField,
-                title: "학번",
-                errorText: "형식이 올바르지 않습니다. (예: 2312)",
-                isError: schoolNumberIsError
+                "8~16자 영어, 숫자, 특수문자 1개 이상",
+                text: $passwordTextField,
+                title: "비밀번호",
+                errorText: "비밀번호는 8~16자, 특수문자 포함 필수",
+                isError: computedPasswordError,
+                isSecure: true
             )
-            .onChange(of: schoolNumberTextField) { newValue in
-                schoolNumberTextField = String(newValue.prefix(4)).filter { $0.isNumber }
-                schoolNumberIsError = !isValidSchoolNumber(schoolNumberTextField)
-            }
+            .padding(.top, 34)
+            .padding(.horizontal, 16)
 
             WasherTextField(
-                "기숙사 호실을 입력해주세요",
-                text: $domitoryRoomTextField,
-                title: "호실",
-                errorText: "형식이 올바르지 않습니다. (예: 315)",
-                isError: domitoryRoomIsError
+                "비밀번호를 다시 입력해주세요",
+                text: $passwordCheckTextField,
+                errorText: "비밀번호가 틀렸습니다.",
+                isError: passwordCheckIsError,
+                isSecure: true
             )
-            .onChange(of: domitoryRoomTextField) { newValue in
-                domitoryRoomTextField = String(newValue.prefix(3)).filter { $0.isNumber }
-                domitoryRoomIsError = !isValidRoomNumber(domitoryRoomTextField)
+            .onChange(of: passwordCheckTextField) { _ in
+                passwordCheckIsError = computedPasswordCheckError
             }
-
-            WasherButton(
-                text: "다음",
-                horizontalPadding: 173,
-                verticalPadding: 17
-            ) {}
-                .disabled(!isFormValid)
+            .padding(.top, 8)
+            .padding(.horizontal, 16)
 
             Spacer()
         }
-    }
-
-    // MARK: - 정규식 검사 함수들
-
-    func isValidName(_ name: String) -> Bool {
-        let regex = #"^[가-힣]{2,4}$"#
-        return name.range(of: regex, options: .regularExpression) != nil
-    }
-
-    func isValidSchoolNumber(_ number: String) -> Bool {
-        let regex = #"^[1-3][1-4](0[1-9]|1[0-8])$"#
-        return number.range(of: regex, options: .regularExpression) != nil
-    }
-
-    func isValidRoomNumber(_ number: String) -> Bool {
-        let regex = #"^[2-5](0[0-9]|1[0-9]|20)$"#
-        return number.range(of: regex, options: .regularExpression) != nil
-    }
-
-    var isFormValid: Bool {
-        return isValidName(nameTextField) &&
-               isValidSchoolNumber(schoolNumberTextField) &&
-               isValidRoomNumber(domitoryRoomTextField) &&
-               !nameTextField.isEmpty &&
-               !schoolNumberTextField.isEmpty &&
-               !domitoryRoomTextField.isEmpty
     }
 }
 

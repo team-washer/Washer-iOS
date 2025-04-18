@@ -47,6 +47,8 @@ struct SignInView: View {
                     errorText: "이메일 형식이 맞지 않습니다.",
                     isError: computedEmailError
                 )
+                .padding(.leading, 16)
+                .padding(.trailing, 8)
 
                 Text("@")
                     .font(.pretendard(.medium, size: 18))
@@ -54,7 +56,7 @@ struct SignInView: View {
                     .padding(.top, 32)
 
                 Text("gsm.hs.kr")
-                    .font(.pretendard(.medium, size: 14))
+                    .font(.pretendard(.medium, size: 12))
                     .color(.gray400)
                     .padding(.horizontal, 16)
                     .frame(height: 44)
@@ -62,7 +64,7 @@ struct SignInView: View {
                         RoundedRectangle(cornerRadius: 8)
                             .color(.gray50)
                     )
-                    .padding(.horizontal, 16)
+                    .padding(.horizontal, 8)
                     .padding(.top, 20)
             }
             .padding(.top, 64)
@@ -76,6 +78,7 @@ struct SignInView: View {
                 isSecure: true
             )
             .padding(.top, 34)
+            .padding(.horizontal, 16)
 
             Button {
                 isLoggedIn.toggle()

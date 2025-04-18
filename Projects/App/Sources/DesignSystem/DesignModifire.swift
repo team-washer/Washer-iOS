@@ -66,7 +66,7 @@ struct DesignModifireView: View {
     var body: some View {
         Text("Hello, Pretendard!")
             .font(.pretendard(.semiBold, size: 20))
-            .color(.gray600)
+            .color(.gray200)
     }
 }
 
