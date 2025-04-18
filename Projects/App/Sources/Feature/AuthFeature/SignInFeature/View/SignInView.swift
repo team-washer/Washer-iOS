@@ -47,7 +47,7 @@ struct SignInView: View {
                     errorText: "이메일 형식이 맞지 않습니다.",
                     isError: computedEmailError
                 )
-                .padding(.leading, 16)
+                .padding(.leading, 26)
                 .padding(.trailing, 8)
 
                 Text("@")
@@ -65,6 +65,7 @@ struct SignInView: View {
                             .color(.gray50)
                     )
                     .padding(.horizontal, 8)
+                    .padding(.trailing, 18)
                     .padding(.top, 20)
             }
             .padding(.top, 64)
@@ -78,7 +79,7 @@ struct SignInView: View {
                 isSecure: true
             )
             .padding(.top, 34)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 26)
 
             Button {
                 isLoggedIn.toggle()
@@ -93,14 +94,13 @@ struct SignInView: View {
 
                     Spacer()
                 }
-                .padding(.leading, 16)
+                .padding(.leading, 26)
                 .padding(.top, 6)
             }
 
             WasherButton(
                 text: "로그인",
-                horizontalPadding: 166,
-                verticalPadding: 17
+                horizontalPadding: 26
             ) {
                 authViewModel.setupEmail(email: emailTextField)
                 authViewModel.setupPassword(password: passwordTextField)

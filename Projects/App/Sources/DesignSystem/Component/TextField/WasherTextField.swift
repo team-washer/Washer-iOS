@@ -99,6 +99,6 @@ struct WasherTextField: View {
                         .font(.pretendard(.regular, size: 11))
                 }
             }
-            .padding(.horizontal, 16)
+            //.padding(.horizontal, 16)
         }
 }

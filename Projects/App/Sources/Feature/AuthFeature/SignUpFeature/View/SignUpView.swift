@@ -61,7 +61,7 @@ struct SignUpView: View {
                     errorText: "이메일 형식이 맞지 않습니다.",
                     isError: computedEmailError
                 )
-                .padding(.leading, 16)
+                .padding(.leading, 26)
                 .padding(.trailing, 8)
 
                 Text("@")
@@ -79,7 +79,7 @@ struct SignUpView: View {
                             .color(.gray50)
                     )
                     .padding(.horizontal, 8)
-                    .padding(.trailing, 8)
+                    .padding(.trailing, 18)
                     .padding(.top, 20)
             }
             .padding(.top, 72)
@@ -102,7 +102,7 @@ struct SignUpView: View {
                             .color(.gray300)
                         )
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 26)
             .padding(.top, 34)
 
             HStack {
@@ -110,7 +110,7 @@ struct SignUpView: View {
                     Text("인증번호가 발송되었습니다 ")
                         .font(.pretendard(.regular, size: 12))
                         .color(.gray400)
-                        .padding(.leading, 16)
+                        .padding(.leading, 26)
                         .padding(.top, 6)
                 }
 
@@ -126,7 +126,7 @@ struct SignUpView: View {
                 isSecure: true
             )
             .padding(.top, 34)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 26)
 
             WasherTextField(
                 "비밀번호를 다시 입력해주세요",
@@ -139,7 +139,7 @@ struct SignUpView: View {
                 passwordCheckIsError = computedPasswordCheckError
             }
             .padding(.top, 8)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 26)
 
             Spacer()
         }

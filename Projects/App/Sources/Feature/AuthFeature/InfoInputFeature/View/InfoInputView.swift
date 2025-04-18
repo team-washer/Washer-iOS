@@ -54,7 +54,7 @@ struct InfoInputView: View {
                 let isOnlyHangul = nameTextField.allSatisfy { $0.isHangul }
                 nameIsError = !(isOnlyHangul && (2...4).contains(nameTextField.count))
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 26)
 
             WasherTextField(
                 "학번을 입력해주세요",
@@ -67,7 +67,7 @@ struct InfoInputView: View {
                 schoolNumberTextField = String(newValue.prefix(4)).filter { $0.isNumber }
                 schoolNumberIsError = !isValidSchoolNumber(schoolNumberTextField)
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 26)
 
             WasherTextField(
                 "기숙사 호실을 입력해주세요",
@@ -80,12 +80,24 @@ struct InfoInputView: View {
                 domitoryRoomTextField = String(newValue.prefix(3)).filter { $0.isNumber }
                 domitoryRoomIsError = !isValidRoomNumber(domitoryRoomTextField)
             }
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 26)
+
+            HStack(spacing: 0) {
+                Text("남자")
+                    .padding(.horizontal, 26)
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                    )
+
+                Text("여자")
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                    )
+            }
 
             WasherButton(
                 text: "다음",
-                horizontalPadding: 173,
-                verticalPadding: 17
+                horizontalPadding: 26
             ) {}
                 .disabled(!isFormValid)
 
