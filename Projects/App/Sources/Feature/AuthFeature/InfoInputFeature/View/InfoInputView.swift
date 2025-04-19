@@ -18,9 +18,11 @@ struct InfoInputView: View {
     @State var schoolNumberIsError: Bool = false
     @State var domitoryRoomTextField: String = ""
     @State var domitoryRoomIsError: Bool = false
+    @State var selectedGender: String = "남자"
+    let genders = ["남자", "여자"]
 
     var body: some View {
-        VStack(spacing: 34) {
+        VStack(spacing: 0) {
             ZStack {
                 HStack {
                     WasherAsset.washerLeftButton.swiftUIImage
@@ -55,6 +57,7 @@ struct InfoInputView: View {
                 nameIsError = !(isOnlyHangul && (2...4).contains(nameTextField.count))
             }
             .padding(.horizontal, 26)
+            .padding(.top, 34)
 
             WasherTextField(
                 "학번을 입력해주세요",
@@ -68,6 +71,7 @@ struct InfoInputView: View {
                 schoolNumberIsError = !isValidSchoolNumber(schoolNumberTextField)
             }
             .padding(.horizontal, 26)
+            .padding(.top, 34)
 
             WasherTextField(
                 "기숙사 호실을 입력해주세요",
@@ -81,27 +85,51 @@ struct InfoInputView: View {
                 domitoryRoomIsError = !isValidRoomNumber(domitoryRoomTextField)
             }
             .padding(.horizontal, 26)
+            .padding(.top, 34)
 
-            HStack(spacing: 0) {
-                Text("남자")
-                    .padding(.horizontal, 26)
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                    )
+            HStack {
+                Text("성별")
+                    .font(.pretendard(.bold, size: 14))
+                    .color(.main100)
+                    .padding(.top, 34)
 
-                Text("여자")
-                    .background(
-                        RoundedRectangle(cornerRadius: 8)
-                    )
+                Spacer()
             }
+            .padding(.leading, 26)
+
+            HStack(spacing: 4) {
+                ForEach(genders, id: \.self) { gender in
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(selectedGender == gender ? Color.color(.main300) : Color.color(.gray50))
+
+                        Text(gender)
+                            .font(.pretendard(.semiBold, size: 14))
+                            .color(.gray700)
+                    }
+                    .frame(height: 42)
+                    .onTapGesture {
+                        selectedGender = gender
+                        Haptic.impact(style: .soft)
+                    }
+                }
+            }
+            .padding(.horizontal, 26)
+            .padding(.top, 8)
+
+            Spacer()
+
+            Rectangle()
+                .frame(height: 2)
+                .color(.gray50)
 
             WasherButton(
                 text: "다음",
                 horizontalPadding: 26
             ) {}
                 .disabled(!isFormValid)
-
-            Spacer()
+                .padding(.top, 10)
+                .padding(.bottom, 30)
         }
     }
 
@@ -131,7 +159,6 @@ struct InfoInputView: View {
                !domitoryRoomTextField.isEmpty
     }
 }
-
 
 #Preview {
     InfoInputView(authViewModel: AuthViewModel())
