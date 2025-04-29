@@ -20,17 +20,6 @@ struct SignUpView: View {
     @State var passwordCheckIsError: Bool = false
     @State var authenticationSuccess: Bool = false
 
-    private var computedEmailError: Bool {
-        !emailTextField.isEmpty && !Validator.isValidEmail(emailTextField)
-    }
-
-    private var computedPasswordError: Bool {
-        !passwordTextField.isEmpty && !Validator.isValidPassword(passwordTextField)
-    }
-
-    private var computedPasswordCheckError: Bool {
-        !passwordCheckTextField.isEmpty && passwordTextField != passwordCheckTextField
-    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -59,7 +48,7 @@ struct SignUpView: View {
                     text: $emailTextField,
                     title: "이메일",
                     errorText: "이메일 형식이 맞지 않습니다.",
-                    isError: computedEmailError
+                    isError: Validator.hasEmailError(emailTextField)
                 )
                 .padding(.leading, 26)
                 .padding(.trailing, 8)
@@ -83,6 +72,13 @@ struct SignUpView: View {
                     .padding(.top, 20)
             }
             .padding(.top, 72)
+
+            WasherButton(
+                text: "인증번호 발송",
+                horizontalPadding: 26
+            )
+            .disabled(emailTextField.isEmpty || Validator.hasEmailError(emailTextField))
+            .padding(.top, 34)
 
             HStack(alignment: .bottom, spacing: 10) {
                 WasherTextField(
@@ -122,7 +118,7 @@ struct SignUpView: View {
                 text: $passwordTextField,
                 title: "비밀번호",
                 errorText: "비밀번호는 8~16자, 특수문자 포함 필수",
-                isError: computedPasswordError,
+                isError: Validator.hasPasswordError(passwordTextField),
                 isSecure: true
             )
             .padding(.top, 34)
@@ -136,15 +132,55 @@ struct SignUpView: View {
                 isSecure: true
             )
             .onChange(of: passwordCheckTextField) { _ in
-                passwordCheckIsError = computedPasswordCheckError
+                passwordCheckIsError = Validator.hasPasswordCheckError(passwordTextField, passwordCheckTextField)
             }
             .padding(.top, 8)
             .padding(.horizontal, 26)
 
             Spacer()
+
+            Rectangle()
+                .frame(height: 2)
+                .color(.gray50)
+
+            WasherButton(
+                text: "완료",
+                horizontalPadding: 26
+            ) {}
+                .disabled(!Validator.isSignUpFormValid(
+                                email: emailTextField,
+                                password: passwordTextField,
+                                passwordCheck: passwordCheckTextField
+                            ))
+                .padding(.top, 10)
+                .padding(.bottom, 30)
         }
     }
 }
+
+extension Validator {
+    static func hasEmailError(_ email: String) -> Bool {
+        !email.isEmpty && !isValidEmail(email)
+    }
+
+    static func hasPasswordError(_ password: String) -> Bool {
+        !password.isEmpty && !isValidPassword(password)
+    }
+
+    static func hasPasswordCheckError(_ password: String, _ passwordCheck: String) -> Bool {
+        !passwordCheck.isEmpty && password != passwordCheck
+    }
+
+    static func isSignUpFormValid(email: String, password: String, passwordCheck: String) -> Bool {
+        isValidEmail(email) &&
+        isValidPassword(password) &&
+        password == passwordCheck &&
+        !email.isEmpty &&
+        !password.isEmpty &&
+        !passwordCheck.isEmpty
+    }
+}
+
 
 #Preview {
     SignUpView(authViewModel: AuthViewModel())

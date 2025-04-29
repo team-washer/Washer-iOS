@@ -8,8 +8,6 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct InfoInputView: View {
     @StateObject var authViewModel: AuthViewModel
     @State var nameTextField: String = ""
@@ -63,7 +61,7 @@ struct InfoInputView: View {
                 "학번을 입력해주세요",
                 text: $schoolNumberTextField,
                 title: "학번",
-                errorText: "형식이 올바르지 않습니다. (예: 2312)",
+                errorText: "형식이 올바르지 않습니다. (예: 3314)",
                 isError: schoolNumberIsError
             )
             .onChange(of: schoolNumberTextField) { newValue in
@@ -77,7 +75,7 @@ struct InfoInputView: View {
                 "기숙사 호실을 입력해주세요",
                 text: $domitoryRoomTextField,
                 title: "호실",
-                errorText: "형식이 올바르지 않습니다. (예: 315)",
+                errorText: "형식이 올바르지 않습니다. (예: 415)",
                 isError: domitoryRoomIsError
             )
             .onChange(of: domitoryRoomTextField) { newValue in
