@@ -32,18 +32,17 @@ public struct WasherButton: View {
         Button(action: {
             self.action()
         }) {
-            Text(text)
-                .font(.pretendard(.semiBold, size: 14))
-                .color(.gray50)
-                .padding(.vertical, verticalPadding)
-                .padding(.horizontal, horizontalPadding)
-                .background(
-                    RoundedRectangle(cornerRadius: 30)
-                        .fill(isPressed ? Color.color(.main100) : Color.color(.main100))
-                )
-                .scaleEffect(isPressed ? 0.9 : 1.0)
-            
+            ZStack {
+                RoundedRectangle(cornerRadius: 8)
+                    .fill(isPressed ? Color.color(.main100) : Color.color(.main100))
 
+                Text(text)
+                    .font(.pretendard(.semiBold, size: 14))
+                    .color(.gray50)
+            }
+            .padding(.horizontal, horizontalPadding)
+            .frame(height: 44)
+            .scaleEffect(isPressed ? 0.9 : 1.0)
         }
         .buttonStyle(PlainButtonStyle())
         .gesture(

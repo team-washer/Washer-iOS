@@ -22,3 +22,9 @@ struct Validator {
             .evaluate(with: password)
     }
 }
+
+extension Character {
+    var isHangul: Bool {
+        return ("가"..."힣").contains(self)
+    }
+}

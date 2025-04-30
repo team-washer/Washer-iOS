@@ -63,11 +63,11 @@ struct WasherTextField: View {
                         }
                     }
                     .padding(.horizontal, 16)
-                    .frame(height: 44)
+                    .frame(height: 42)
                     .onSubmit(onSubmit)
                     .focused($isFocused)
                     .foregroundColor(.color(.gray700))
-                    .font(.pretendard(.semiBold, size: 14))
+                    .font(.pretendard(.semiBold, size: 12))
 
                     if isSecure {
                         Button {
@@ -96,9 +96,9 @@ struct WasherTextField: View {
                 if isError {
                     Text(errorText)
                         .foregroundStyle(.red)
-                        .font(.pretendard(.regular, size: 12))
+                        .font(.pretendard(.regular, size: 11))
                 }
             }
-            .padding(.horizontal, 16)
+            //.padding(.horizontal, 16)
         }
 }
