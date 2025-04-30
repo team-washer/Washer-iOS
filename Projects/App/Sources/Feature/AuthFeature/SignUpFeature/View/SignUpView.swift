@@ -89,14 +89,21 @@ struct SignUpView: View {
                     isError: authenticationCodeIsError
                 )
 
-                Text("확인")
-                    .font(.pretendard(.semiBold, size: 12))
-                    .padding(.vertical, 14)
-                    .padding(.horizontal, 35)
-                    .background(
-                        RoundedRectangle(cornerRadius: 4)
-                            .color(.gray300)
+                Button {
+
+                } label: {
+                    Text("확인")
+                        .foregroundStyle(.white)
+                        .font(.pretendard(.semiBold, size: 12))
+                        .padding(.vertical, 14)
+                        .padding(.horizontal, 35)
+                        .background(
+                            RoundedRectangle(cornerRadius: 4)
+                                .color(.main100)
                         )
+                }
+                .disabled(!Validator.isValidAuthCode(authenticationCodeNumberTextField))
+                .opacity(Validator.isValidAuthCode(authenticationCodeNumberTextField) ? 1.0 : 0.5)
             }
             .padding(.horizontal, 26)
             .padding(.top, 34)
@@ -148,10 +155,10 @@ struct SignUpView: View {
                 horizontalPadding: 26
             ) {}
                 .disabled(!Validator.isSignUpFormValid(
-                                email: emailTextField,
-                                password: passwordTextField,
-                                passwordCheck: passwordCheckTextField
-                            ))
+                    email: emailTextField,
+                    password: passwordTextField,
+                    passwordCheck: passwordCheckTextField
+                ))
                 .padding(.top, 10)
                 .padding(.bottom, 30)
         }
@@ -179,8 +186,12 @@ extension Validator {
         !password.isEmpty &&
         !passwordCheck.isEmpty
     }
-}
 
+    static func isValidAuthCode(_ code: String) -> Bool {
+        let pattern = #"^\d{5}$"#
+        return code.range(of: pattern, options: .regularExpression) != nil
+    }
+}
 
 #Preview {
     SignUpView(authViewModel: AuthViewModel())
