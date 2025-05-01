@@ -107,12 +107,10 @@ public final class AuthViewModel: ObservableObject {
             case .success(let result):
                 let statusCode = result.statusCode
 
-                // 🔹 응답 데이터 확인을 위해 출력
                 if let responseString = String(data: result.data, encoding: .utf8) {
                     print("📥 서버 응답 (상태 코드: \(statusCode)):\n\(responseString)")
                 }
 
-                // 🔹 응답이 비어 있는지 확인
                 guard !result.data.isEmpty else {
                     print("⚠️ 응답 본문이 비어 있습니다. (상태 코드: \(statusCode))")
                     DispatchQueue.main.async { completion(statusCode) }
@@ -120,7 +118,6 @@ public final class AuthViewModel: ObservableObject {
                 }
 
                 do {
-                    // JSON 변환 시도
                     let responseData = try result.mapJSON()
                     print("✅ JSON 변환 성공: \(responseData)")
 
@@ -211,8 +208,6 @@ public final class AuthViewModel: ObservableObject {
                             return 0
                         }
                     }()
-
-
                     KeyChain.shared.saveTokenWithExpiration(key: Const.KeyChainKey.accessToken, token: accessToken, expiresIn: accessTokenExpiresIn)
                     KeyChain.shared.saveTokenWithExpiration(key: Const.KeyChainKey.refreshToken, token: refreshToken, expiresIn: refreshTokenExpiresIn)
 
