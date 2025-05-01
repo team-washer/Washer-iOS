@@ -13,6 +13,7 @@ public enum AuthAPI {
     case signUp(param: SignUpRequest)
     case signIn(param: SignInRequest)
     case refresh(idToken: String)
+    case signUpMailSend(email: String)
 }
 
 extension AuthAPI: TargetType {
@@ -28,12 +29,14 @@ extension AuthAPI: TargetType {
             return "/auth/signin"
         case .refresh:
             return "/auth/"
+        case .signUpMailSend:
+            return "/auth/signup/mailsend"
         }
     }
 
     public var method: Moya.Method {
         switch self {
-        case .signUp, .signIn:
+        case .signUp, .signIn, .signUpMailSend:
             return .post
         case .refresh:
             return .patch
@@ -51,7 +54,9 @@ extension AuthAPI: TargetType {
         case .signIn(let param):
             return .requestJSONEncodable(param)
         case .refresh(let idToken):
-            return .requestPlain
+            return .requestParameters(parameters: ["idToken": idToken], encoding: JSONEncoding.default)
+        case .signUpMailSend(let email):
+            return .requestParameters(parameters: ["email": email], encoding: JSONEncoding.default)
         }
     }
 
@@ -67,4 +72,3 @@ extension AuthAPI: TargetType {
         }
     }
 }
-
