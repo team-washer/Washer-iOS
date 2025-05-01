@@ -19,6 +19,7 @@ struct SignUpView: View {
     @State var passwordCheckTextField: String = ""
     @State var passwordCheckIsError: Bool = false
     @State var authenticationSuccess: Bool = false
+    @State var authenticationButtonText: String = "인증번호 발송"
 
 
     var body: some View {
@@ -74,11 +75,22 @@ struct SignUpView: View {
             .padding(.top, 72)
 
             WasherButton(
-                text: "인증번호 발송",
+                text: authenticationButtonText,
                 horizontalPadding: 26
-            )
+            ) {
+                authViewModel.setupEmail(email: emailTextField)
+                authViewModel.emailSend { statusCode in
+                    if (200...299).contains(statusCode) {
+                        print("SignUpView | 발송 성공")
+
+                        authenticationButtonText = "인증번호 재발송"
+                    } else {
+                        print("SignUpView | 발송 실패")
+                    }
+                }
+            }
             .disabled(emailTextField.isEmpty || Validator.hasEmailError(emailTextField))
-            .padding(.top, 34)
+            .padding(.top, 18)
 
             HStack(alignment: .bottom, spacing: 10) {
                 WasherTextField(
