@@ -39,7 +39,7 @@ extension AuthAPI: TargetType {
 
     public var method: Moya.Method {
         switch self {
-        case .signUp, .signIn, .signUpMailSend:
+        case .signUp, .signIn, .signUpMailSend, .signUpMailVerification:
             return .post
         case .refresh:
             return .patch
@@ -55,6 +55,8 @@ extension AuthAPI: TargetType {
         case .signUp(let param):
             return .requestJSONEncodable(param)
         case .signIn(let param):
+            return .requestJSONEncodable(param)
+        case .signUpMailVerification(let param):
             return .requestJSONEncodable(param)
         case .refresh(let idToken):
             return .requestParameters(parameters: ["idToken": idToken], encoding: JSONEncoding.default)
