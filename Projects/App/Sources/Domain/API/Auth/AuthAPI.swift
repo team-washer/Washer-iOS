@@ -14,6 +14,7 @@ public enum AuthAPI {
     case signIn(param: SignInRequest)
     case refresh(idToken: String)
     case signUpMailSend(email: String)
+    case signUpMailVerification()
 }
 
 extension AuthAPI: TargetType {

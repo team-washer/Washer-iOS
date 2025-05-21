@@ -19,7 +19,10 @@ struct SignUpView: View {
     @State var passwordCheckTextField: String = ""
     @State var passwordCheckIsError: Bool = false
     @State var authenticationSuccess: Bool = false
+    @State var authenticationCodeSendSuccess: Bool = false
     @State var authenticationButtonText: String = "인증번호 발송"
+    @State var authenticationCodeBottomText: String = ""
+    @State var isAuthCodeButtonClicked: Bool = false
 
 
     var body: some View {
@@ -80,12 +83,16 @@ struct SignUpView: View {
             ) {
                 authViewModel.setupEmail(email: emailTextField)
                 authViewModel.emailSend { statusCode in
+                    isAuthCodeButtonClicked = true
                     if (200...299).contains(statusCode) {
                         print("SignUpView | 발송 성공")
 
+                        authenticationCodeBottomText = "인증번호가 발송되었습니다."
                         authenticationButtonText = "인증번호 재발송"
+                        authenticationCodeSendSuccess = true
                     } else {
                         print("SignUpView | 발송 실패")
+                        authenticationCodeBottomText = "인증번호 발송에 실패하였습니다."
                     }
                 }
             }
@@ -121,10 +128,10 @@ struct SignUpView: View {
             .padding(.top, 34)
 
             HStack {
-                if authenticationSuccess == false {
-                    Text("인증번호가 발송되었습니다 ")
+                if isAuthCodeButtonClicked {
+                    Text(authenticationCodeBottomText)
                         .font(.pretendard(.regular, size: 12))
-                        .color(.gray400)
+                        .color(authenticationCodeSendSuccess ? .gray400 : .error)
                         .padding(.leading, 26)
                         .padding(.top, 6)
                 }
