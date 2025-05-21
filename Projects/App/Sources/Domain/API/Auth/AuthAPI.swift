@@ -14,7 +14,7 @@ public enum AuthAPI {
     case signIn(param: SignInRequest)
     case refresh(idToken: String)
     case signUpMailSend(email: String)
-    case signUpMailVerification()
+    case signUpMailVerification(param: SignUpMailVerificationRequest)
 }
 
 extension AuthAPI: TargetType {
@@ -32,6 +32,8 @@ extension AuthAPI: TargetType {
             return "/auth/"
         case .signUpMailSend:
             return "/auth/signup/mailsend"
+        case .signUpMailVerification:
+            return "/auth/signup/emailverify"
         }
     }
 
